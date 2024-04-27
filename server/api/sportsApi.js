@@ -37,7 +37,6 @@ const getDefaultOptions = () => {
  * @param {Date} date 
  */
 const getGamesForDate = (date) => {
-    console.log(date)
     let options = getDefaultOptions()
     let params = new URLSearchParams({
         league: LIGA_BSN,
@@ -54,6 +53,8 @@ const getGamesForDate = (date) => {
             console.error("Fetch error:  " , err)
             throw new Error("Could not fetch")
         })
+        .then(json_data => json_data.response)
+     
     return response
 }
 

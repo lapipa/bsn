@@ -10,25 +10,32 @@ const apiRouter = (req, res) => {
     console.log(req.url)
     let url = new URL(req.url , `http://${req.headers.host}`)
     let params = url.searchParams
-    if (req.url.includes('getGameByDate')) {
+    if (req.url.includes('getGamesByDate')) {
         sportsApi.getGamesForDate(new Date(params.get('date')))
             .then(data => {
-                console.log(data)
                 res.writeHead(200, {
                     "Content-Type": contentTypes.json,
-                    "content-length": Buffer.byteLength(JSON.stringify(data))
+                    "content-length": Buffer.byteLength(JSON.stringify(data)),
+                    ... corsHeaders
                 })
+                console.log(`sending games!`)
                 res.end(JSON.stringify(data))
             })
             .catch(err => {
                 let response = "Internal Server Error , oops!"
                 res.writeHead(500, {
                     "Content-Type": contentTypes.plainText,
-                    "content-length": Buffer.byteLength(JSON.stringify(response))
+                    "content-length": Buffer.byteLength(JSON.stringify(response)),
+                    ... corsHeaders
                 })
             })
     }
 }
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*", // Adjust this to restrict to specific origins if needed
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization"
+};
 
 const contentTypes = {
     plainText: 'text/plain',

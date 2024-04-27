@@ -4,7 +4,12 @@
  */
 
 
-const http = require('node-fetch')
+// Dynamically import node-fetch
+import('node-fetch').then(nodeFetch => {
+    fetch = nodeFetch.default || nodeFetch; // Use the default export if available
+}).catch(err => {
+    console.error("Failed to load node-fetch:", err);
+});
 
 //TODO test api on app initialization
 const API_KEY = process.env.API_KEY
@@ -31,20 +36,25 @@ const getDefaultOptions = () => {
 /**
  * @param {Date} date 
  */
-const getGamesForDate = async (date) => {
+const getGamesForDate = (date) => {
+    console.log(date)
     let options = getDefaultOptions()
     let params = new URLSearchParams({
         league: LIGA_BSN,
-        date: date.toISOString().slice(0, 10)
+        date: date.toISOString().slice(0, 10),
+        season:date.toISOString().slice(0, 4)
     })
 
-    fetch(`${BASE_URL}/games?${params.toString()}`, options)
+    let response = fetch(`${BASE_URL}/games?${params.toString()}`, options)
         .then(res => {
-            console.log(res.json())
+            return res.json()
         })
         .catch(err => {
             //todo what to send back? 500?
+            console.error("Fetch error:  " , err)
+            throw new Error("Could not fetch")
         })
+    return response
 }
 
 /**
@@ -56,7 +66,7 @@ const getGamesForDateRange = async (fromDate, toDate) => {
 }
 
 module.exports = {
-    sportsAPi: {
+    sportsApi: {
         getGamesForDate,
         getGamesForDateRange
     }

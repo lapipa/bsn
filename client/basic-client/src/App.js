@@ -1,12 +1,12 @@
 import './App.css';
+import Navbar from './components/navbar/Navbar';
 import TodaysGame from './pages/TodaysGame';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+        <Navbar />
         <TodaysGame/>
-      </header>
     </div>
   );
 }

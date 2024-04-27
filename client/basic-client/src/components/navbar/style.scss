@@ -1,0 +1,24 @@
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #007bff; // Changed to a more distinct color
+    color: #fff;
+    height: 50px; // Reduced height to make it thinner
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky; // Added to make the navbar stick to the top
+    top: 0; // Specifies the top position for sticky navbar
+    z-index: 1000; // Ensures the navbar stays on top of other content
+   }
+   
+   .navbar-content {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    max-width: 1200px;
+   }
+   
+   .navbar-logo img {
+    height: 40px;
+    width: auto;
+   }

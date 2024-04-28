@@ -6,7 +6,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-content">
         <div className="navbar-logo">
-          <img src="https://basquet2.pixeles.club/wp-content/uploads/2023/03/BSN_LogoPack_DarkFull.png" alt="Logo" />
+          <img src="https://upload.wikimedia.org/wikipedia/en/f/fe/Baloncesto_Superior_Nacional.png" alt="Logo" />
         </div>
       </div>
     </nav>

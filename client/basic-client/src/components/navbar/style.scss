@@ -9,7 +9,8 @@
     position: sticky; // Added to make the navbar stick to the top
     top: 0; // Specifies the top position for sticky navbar
     z-index: 1000; // Ensures the navbar stays on top of other content
-   }
+    width: 100vw;
+    }
    
    .navbar-content {
     display: flex;
@@ -21,4 +22,7 @@
    .navbar-logo img {
     height: 40px;
     width: auto;
+    align-content: center;
+    left: 45%;
+    position: fixed;
    }

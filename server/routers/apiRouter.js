@@ -1,5 +1,5 @@
 const http = require("http")
-const { sportsApi } = require('../api/sportsApi')
+const { gamesController } = require('../controllers/gamesController');
 /**
  * Handles incoming HTTP requests and routes them to the appropriate controller based on the URL.
  *
@@ -7,29 +7,27 @@ const { sportsApi } = require('../api/sportsApi')
  * @param {http.ServerResponse} res - The outgoing HTTP response.
  */
 const apiRouter = (req, res) => {
-    console.log(req.url)
-    let url = new URL(req.url , `http://${req.headers.host}`)
+
+    let url = new URL(req.url, `http://${req.headers.host}`)
     let params = url.searchParams
-    if (req.url.includes('getGamesByDate')) {
-        sportsApi.getGamesForDate(new Date(params.get('date')))
-            .then(data => {
-                res.writeHead(200, {
-                    "Content-Type": contentTypes.json,
-                    "content-length": Buffer.byteLength(JSON.stringify(data)),
-                    ... corsHeaders
-                })
-                console.log(`sending games!`)
-                res.end(JSON.stringify(data))
-            })
-            .catch(err => {
-                let response = "Internal Server Error , oops!"
-                res.writeHead(500, {
-                    "Content-Type": contentTypes.plainText,
-                    "content-length": Buffer.byteLength(JSON.stringify(response)),
-                    ... corsHeaders
-                })
-            })
+
+    switch (true) {
+        case url.pathname.includes('getGamesByDate'):
+            const date = params.get('date');
+            gamesController.getGamesByDate(res, date);
+            break;
+        case url.pathname.includes('getAllGames'):
+            gamesController.getAllGames(res)
+            break;
+        case url.pathname.includes('getTodaysGames'):
+            gamesController.getGamesByDate(res , new Date())
+            break;
+        default: //todo add cors 
+            res.writeHead(400, contentTypes.plainText)
+            res.end("Come on bro! Get real!\n")
+
     }
+
 }
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*", // Adjust this to restrict to specific origins if needed
@@ -41,4 +39,5 @@ const contentTypes = {
     plainText: 'text/plain',
     json: 'text/json',
 }
+
 module.exports = { apiRouter }
